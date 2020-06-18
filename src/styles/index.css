@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#main-container {
+  margin: 5px 0;
+}
+
+header {
+  background: #ccc;
+  padding: 10px;
+}
+header .title {
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+}
