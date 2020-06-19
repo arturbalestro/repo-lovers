@@ -1,5 +1,6 @@
 import locales from "../utils/locales";
 import formData from "../utils/formData";
+import axios from "axios";
 
 const renderInput = (fieldData) => {
   const { label, id, type } = fieldData;
@@ -46,18 +47,25 @@ const renderTextArea = (fieldData) => {
 window.addEventListener(
   "load",
   function () {
+    getCEPInfo();
+
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName("needs-validation");
+    const forms = $(".needs-validation");
     // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function (form) {
+    let formValues = [];
+    Array.prototype.filter.call(forms, function (form) {
       form.addEventListener(
         "submit",
-        function (event) {
+        (event) => {
           if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
+          } else {
+            //TODO Adicionar um router pra trocar de página
           }
           form.classList.add("was-validated");
+          //TODO Enviar esses dados pra próxima pagina
+          formValues.push(event.target.value);
         },
         false
       );
@@ -66,14 +74,34 @@ window.addEventListener(
   false
 );
 
-$("#login-form").submit((event) => {
-  console.log("####event", event);
-});
+const getCEPInfo = () => {
+  $("#registroCEP").blur((e) => {
+    //TODO: Add spinner active
+    axios
+      .get("https://api.postmon.com.br/v1/cep/" + e.target.value)
+      .then((response) => {
+        const { logradouro, bairro, cidade, estado } = response.data;
+        $("#registroLogradouro").val(logradouro);
+        $("#registroBairro").val(bairro);
+        $("#registroCidade").val(cidade);
+        $("#registroUF").val(estado);
+        //TODO: Add spinner inactive
+      })
+      .catch((error) => {
+        //TODO: Add spinner inactive
+        //TODO: Fix error message display
+        alert(locales.cepNotFound);
+      });
+  });
+};
 
 const Login = (mainContainer) => {
   mainContainer.append(
-    '<div class="offset-md-3 col-md-6 text-center">' +
-      '<form class="needs-validation" id="login-form" novalidate onSubmit="SubmitForm()">' +
+    '<div id="page-login" class="offset-md-3 col-md-6 text-center">' +
+      "<h2>" +
+      locales.loginTitle +
+      "</h2>" +
+      '<form class="needs-validation" id="login-form" novalidate>' +
       renderInput(formData.input.nome) +
       renderInput(formData.input.dataNascimento) +
       renderInput(formData.input.cpf) +
@@ -87,7 +115,9 @@ const Login = (mainContainer) => {
       renderInput(formData.input.cidade) +
       renderInput(formData.input.uf) +
       renderTextArea(formData.textarea.bio) +
-      '<button type="submit" class="btn btn-primary">Submit</button>' +
+      '<button type="submit" class="btn btn-primary">' +
+      locales.submitText +
+      "</button>" +
       "</form>" +
       "</div>"
   );

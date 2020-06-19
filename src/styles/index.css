@@ -8,11 +8,26 @@ body {
 }
 
 header {
-  background: #ccc;
+  background: #333;
+  margin-bottom: 10px;
   padding: 10px;
 }
 header .title {
   color: #fff;
   font-weight: bold;
   font-size: 20px;
+}
+
+#login-form {
+  border: 1px solid #333;
+  border-radius: 10px;
+  margin: 20px 0;
+  padding: 20px;
+}
+#login-form .form-control {
+  border: 1px solid #333;
+}
+
+#page-repolist {
+  /*display: none;*/
 }

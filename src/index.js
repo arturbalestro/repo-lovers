@@ -1,21 +1,20 @@
-import locales from "./components/utils/locales";
 import Header from "./components/atoms/Header";
 import Login from "./components/pages/Login";
-//import "./styles/index.css";
+import "./styles/index.css";
+import RepoList from "./components/pages/RepoList";
 
 const Root = () => {
   //Adding main container to root element
   const rootElement = $("#root");
   rootElement.append(
-    "<div class='col-md-12 text-center' id='main-container'></div>"
+    "<div class='row'><div class='col-md-12 text-center m-0 p-0' id='main-container'></div></div>"
   );
   const mainContainer = rootElement.find("#main-container");
 
-  //Rendering title
+  //Renderizando componentes da página
   Header(mainContainer);
-
-  //Renderizando Login como um "componente"
   Login(mainContainer);
+  RepoList(mainContainer);
 
   rootElement.append(mainContainer);
 
