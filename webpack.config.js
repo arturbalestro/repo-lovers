@@ -37,6 +37,11 @@ module.exports = (env) => {
       // later), index.html should be served in place of 404 responses.
       historyApiFallback: true,
 
+      proxy: {
+        "/login": path.join(PATH_SOURCE, "./login.html"),
+        "/repo-list": path.join(PATH_SOURCE, "./repo-list.html"),
+      },
+
       //Enabling Hot Module Replacement
       hot: true,
 
@@ -124,6 +129,16 @@ module.exports = (env) => {
       // https://github.com/jantimon/html-webpack-plugin
       new HtmlWebpackPlugin({
         template: path.join(PATH_SOURCE, "./index.html"),
+      }),
+      new HtmlWebpackPlugin({
+        // Also generate a login.html
+        filename: "login.html",
+        template: "src/login.html",
+      }),
+      new HtmlWebpackPlugin({
+        // Also generate a repo-list.html
+        filename: "repo-list.html",
+        template: "src/repo-list.html",
       }),
       new CleanWebpackPlugin(),
     ],

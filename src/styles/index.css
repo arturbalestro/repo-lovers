@@ -17,6 +17,16 @@ header .title {
   font-weight: bold;
   font-size: 20px;
 }
+header .title a {
+  border-bottom: 1px solid transparent;
+  color: #fff;
+  text-decoration: none;
+  padding-bottom: 1px;
+}
+header .title a:hover {
+  border-bottom: 1px solid #fff;
+  text-decoration: none;
+}
 
 #login-form {
   border: 1px solid #333;
@@ -26,8 +36,4 @@ header .title {
 }
 #login-form .form-control {
   border: 1px solid #333;
-}
-
-#page-repolist {
-  /*display: none;*/
 }

@@ -13,8 +13,19 @@ const Root = () => {
 
   //Renderizando componentes da página
   Header(mainContainer);
-  Login(mainContainer);
-  RepoList(mainContainer);
+  switch (window.location.pathname) {
+    case "/login.html":
+      Login(mainContainer);
+      break;
+
+    case "/repo-list.html":
+      RepoList(mainContainer);
+      break;
+
+    default:
+      Login(mainContainer);
+      break;
+  }
 
   rootElement.append(mainContainer);
 

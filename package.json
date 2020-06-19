@@ -40,7 +40,6 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
-    "express": "^4.17.1",
     "jquery": "^3.5.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"

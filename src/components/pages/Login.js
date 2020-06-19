@@ -3,7 +3,7 @@ import formData from "../utils/formData";
 import axios from "axios";
 
 const renderInput = (fieldData) => {
-  const { label, id, type } = fieldData;
+  const { label, id, type, value, required } = fieldData;
   return (
     '<div class="form-group text-left">' +
     '<label for="' +
@@ -15,7 +15,11 @@ const renderInput = (fieldData) => {
     type +
     '" class="form-control" id="' +
     id +
-    '" required>' +
+    '" value="' +
+    value +
+    '" ' +
+    required +
+    ">" +
     '<div class="invalid-feedback">' +
     locales.formInvalidError +
     "</div>" +
@@ -52,7 +56,6 @@ window.addEventListener(
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = $(".needs-validation");
     // Loop over them and prevent submission
-    let formValues = [];
     Array.prototype.filter.call(forms, function (form) {
       form.addEventListener(
         "submit",
@@ -61,11 +64,68 @@ window.addEventListener(
             event.preventDefault();
             event.stopPropagation();
           } else {
-            //TODO Adicionar um router pra trocar de página
+            //TODO Improve the session storing logic
+            // Save form data to sessionStorage
+            const currentForm = $(event.target);
+
+            sessionStorage.setItem(
+              "registroNome",
+              currentForm.find("#registroNome").val()
+            );
+            sessionStorage.setItem(
+              "registroUsuarioGithub",
+              currentForm.find("#registroUsuarioGithub").val()
+            );
+            sessionStorage.setItem(
+              "registroDataNascimento",
+              currentForm.find("#registroDataNascimento").val()
+            );
+            sessionStorage.setItem(
+              "registroCPF",
+              currentForm.find("#registroCPF").val()
+            );
+            sessionStorage.setItem(
+              "registroCelular",
+              currentForm.find("#registroCelular").val()
+            );
+            sessionStorage.setItem(
+              "registroEmail",
+              currentForm.find("#registroEmail").val()
+            );
+            sessionStorage.setItem(
+              "registroCEP",
+              currentForm.find("#registroCEP").val()
+            );
+            sessionStorage.setItem(
+              "registroNumero",
+              currentForm.find("#registroNumero").val()
+            );
+            sessionStorage.setItem(
+              "registroComplemento",
+              currentForm.find("#registroComplemento").val()
+            );
+            sessionStorage.setItem(
+              "registroLogradouro",
+              currentForm.find("#registroLogradouro").val()
+            );
+            sessionStorage.setItem(
+              "registroBairro",
+              currentForm.find("#registroBairro").val()
+            );
+            sessionStorage.setItem(
+              "registroCidade",
+              currentForm.find("#registroCidade").val()
+            );
+            sessionStorage.setItem(
+              "registroUF",
+              currentForm.find("#registroUF").val()
+            );
+            sessionStorage.setItem(
+              "registroBio",
+              currentForm.find("#registroBio").val()
+            );
           }
           form.classList.add("was-validated");
-          //TODO Enviar esses dados pra próxima pagina
-          formValues.push(event.target.value);
         },
         false
       );
@@ -90,7 +150,7 @@ const getCEPInfo = () => {
       .catch((error) => {
         //TODO: Add spinner inactive
         //TODO: Fix error message display
-        alert(locales.cepNotFound);
+        console.log(locales.cepNotFound);
       });
   });
 };
@@ -101,8 +161,9 @@ const Login = (mainContainer) => {
       "<h2>" +
       locales.loginTitle +
       "</h2>" +
-      '<form class="needs-validation" id="login-form" novalidate>' +
+      '<form action="/repo-list.html" method="get" class="needs-validation" id="login-form" novalidate>' +
       renderInput(formData.input.nome) +
+      renderInput(formData.input.usuarioGithub) +
       renderInput(formData.input.dataNascimento) +
       renderInput(formData.input.cpf) +
       renderInput(formData.input.celular) +
