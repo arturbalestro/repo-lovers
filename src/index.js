@@ -27,6 +27,15 @@ const Root = () => {
       break;
   }
 
+  //Rendering spinner
+  rootElement.append(
+    '<div class="spinner justify-content-center hidden">' +
+      '<div class="spinner-border" role="status">' +
+      '<span class="sr-only">Loading...</span>' +
+      "</div>" +
+      "</div>"
+  );
+
   rootElement.append(mainContainer);
 
   return rootElement;
