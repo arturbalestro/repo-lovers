@@ -174,7 +174,7 @@ const getCEPInfo = () => {
         spinner(false);
 
         //TODO: Fix error message display
-        alert(locales.cepNotFound);
+        $("#cepErrorModal").modal("show");
       });
   });
 };

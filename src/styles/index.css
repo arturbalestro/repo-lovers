@@ -34,7 +34,7 @@ header {
 header .title {
   color: #fff;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 22px;
 }
 header .title a {
   border-bottom: 1px solid transparent;
@@ -48,7 +48,7 @@ header .title a:hover {
 }
 header .subtitle {
   color: #fff;
-  font-weight: bold;
+  font-weight: normal;
   font-size: 16px;
 }
 

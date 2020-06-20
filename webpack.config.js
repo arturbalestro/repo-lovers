@@ -33,12 +33,20 @@ module.exports = (env) => {
       // Specify a port number on which to listen for requests.
       port: 8080,
 
+      // Avoid CORS issues
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods":
+          "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Headers":
+          "X-Requested-With, content-type, Authorization",
+      },
+
       // When using the HTML5 History API (you'll probably do this with React
       // later), index.html should be served in place of 404 responses.
       historyApiFallback: true,
 
       proxy: {
-        "/login": path.join(PATH_SOURCE, "./login.html"),
         "/repo-list": path.join(PATH_SOURCE, "./repo-list.html"),
       },
 
@@ -129,11 +137,6 @@ module.exports = (env) => {
       // https://github.com/jantimon/html-webpack-plugin
       new HtmlWebpackPlugin({
         template: path.join(PATH_SOURCE, "./index.html"),
-      }),
-      new HtmlWebpackPlugin({
-        // Also generate a login.html
-        filename: "login.html",
-        template: "src/login.html",
       }),
       new HtmlWebpackPlugin({
         // Also generate a repo-list.html

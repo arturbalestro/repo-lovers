@@ -10,9 +10,19 @@ const loggedInUser =
   sessionStorage.getItem(input.usuarioGithub.id) || "octocat";
 
 const renderContributors = (contributors) => {
-  const contributorsList = contributors.map((contributor) => {
-    if (contributor !== undefined) return "<li>" + contributor.login + "</li>";
-  });
+  const contributorsList = contributors
+    .slice(19)
+    .sort((a, b) => b.contributions - a.contributions)
+    .map((contributor) => {
+      if (contributor !== undefined)
+        return (
+          "<li><p class='mb-0'><strong>" +
+          contributor.login +
+          "</strong></p> <p>Contributions: " +
+          contributor.contributions +
+          "</p></li>"
+        );
+    });
   return contributorsList;
 };
 
@@ -24,7 +34,9 @@ const getContributors = (loggedInUser, repoName) => {
     )
     .then((response) => {
       spinner(false);
-      const contributorListContainer = $("#" + repoName + " ul");
+      const contributorListContainer = $(
+        "#" + repoName + "contributor-container"
+      );
       contributorListContainer.append(renderContributors(response.data));
     })
     .catch((error) => {
@@ -34,26 +46,30 @@ const getContributors = (loggedInUser, repoName) => {
     });
 };
 
+const renderIssues = (issues) => {
+  const issueList = issues.slice(19).map((issue) => {
+    if (issue) {
+      return (
+        "<li><p class='mb-0'><strong>" +
+        issue.title +
+        "</strong></p><p class='mb-0'><strong>" +
+        issue.body +
+        "</strong></p></li>"
+      );
+    }
+  });
+
+  return issueList;
+};
+
 const getIssues = (loggedInUser, repoName) => {
   spinner(true);
   axios
     .get(githubAPIURL + "/repos/" + loggedInUser + "/" + repoName + "/issues")
     .then((response) => {
       spinner(false);
-      //TODO Adapt this to contributors structure
-      const issues = response.data.map((issue) => {
-        if (issue) {
-          $("#" + repoName + " ul").append(
-            "<li><p>" +
-              issue.title +
-              "</p><p>" +
-              issue.body +
-              "</p><p>" +
-              issue.state +
-              "</p></li>"
-          );
-        }
-      });
+      const issueListContainer = $("#" + repoName + "issue-container");
+      issueListContainer.append(renderIssues(response.data));
     })
     .catch((error) => {
       spinner(false);
@@ -85,16 +101,16 @@ const getRepo = (repoListData) => {
         '" data-parent="#repo-list-accordion">' +
         '<div class="card-body">' +
         '<div class="card"><div class="card-body">' +
-        "<h3>Issues:</h3>" +
-        "<ul class='text-left'>" +
-        getIssues(loggedInUser, repo.name) +
+        "<h3>Contribuidores:</h3>" +
+        "<ul id='contributor-container' class='text-left'>" +
+        getContributors(loggedInUser, repo.name) +
         "</ul></div></div>" +
         '<div class="card"><div class="card-body">' +
-        "<h3>Contribuidores:</h3>" +
-        "<ul class='text-left'>" +
-        getContributors(loggedInUser, repo.name) +
-        "</ul>" +
-        "</div></div></div></div></div>"
+        "<h3>Issues:</h3>" +
+        "<ul id='issue-container' class='text-left'>" +
+        getIssues(loggedInUser, repo.name) +
+        "</ul></div></div>" +
+        "</div></div></div>"
     )
     .join("");
 
