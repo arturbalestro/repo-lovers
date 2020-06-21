@@ -5,7 +5,7 @@ const Header = (mainContainer) => {
     "<h1 class='title'><a href='/'>" + locales.mainTitleText + "</a></h1>";
   const subTitle = "<h2 class='subtitle'>" + locales.subTitleText + "</h2>";
 
-  mainContainer.append("<header>" + mainTitle + subTitle + "</header>");
+  mainContainer.prepend("<header>" + mainTitle + subTitle + "</header>");
 };
 
 export default Header;

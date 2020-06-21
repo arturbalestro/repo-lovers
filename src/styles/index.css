@@ -30,6 +30,7 @@ header {
   background: #333;
   margin-bottom: 10px;
   padding: 10px;
+  text-align: center;
 }
 header .title {
   color: #fff;
@@ -60,4 +61,37 @@ header .subtitle {
 }
 #login-form .form-control {
   border: 1px solid #333;
+}
+
+#page-repolist {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+#page-repolist h2 {
+  margin-bottom: 15px;
+}
+
+.details-container {
+  padding: 15px;
+}
+
+#contributor-container,
+#issue-container {
+  display: flex;
+}
+#contributor-container ul,
+#issue-container ul {
+  list-style: none;
+  padding: 0;
+}
+#contributor-container li,
+#issue-container li {
+  display: inline-block;
+  margin: 5px;
+  list-style: none;
+  padding: 0;
+}
+#contributor-container li .card,
+#issue-container li .card {
+  min-height: 150px;
 }

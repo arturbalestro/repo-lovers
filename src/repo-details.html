@@ -7,17 +7,23 @@
   </head>
   <body>
     <div id="root">
-      <div class="modal fade" id="repoDetailsModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Detalhes do Repositório</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+      <div id="page-repodetails">
+        <div class="col-md-12">
+          <div class="card details-container">
+            <h6><a id="repository-owner" href="/repo-list.html"></a> > <span id="repository-name"></span></h6>
+            <div class="card">
+              <div class="card-body">
+                <h5>Contribuidores:</h5>
+                <div id="contributor-container" class="col-md-12 p-0 text-left"></div>
+              </div>
             </div>
-            <div class="modal-body">
-              
+      
+            <div class="card">
+              <div class="card-body">
+              <h5>Issues: </h5>
+              <div class="btn btn-primary" id="filter-open">Open</div>
+              <div class="btn btn-primary" id="filter-closed">Closed</div>
+              <div id="issue-container" class="col-md-12 p-0 text-left"></div>
             </div>
           </div>
         </div>

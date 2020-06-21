@@ -48,6 +48,7 @@ module.exports = (env) => {
 
       proxy: {
         "/repo-list": path.join(PATH_SOURCE, "./repo-list.html"),
+        "/repo-details": path.join(PATH_SOURCE, "./repo-details.html"),
       },
 
       //Enabling Hot Module Replacement
@@ -105,11 +106,6 @@ module.exports = (env) => {
 
                     // Specify the core-js version. Must match the version in package.json
                     corejs: 3,
-
-                    // Specify which environments we support/target for our project.
-                    // (We have chosen to specify targets in .browserslistrc, so there
-                    // is no need to do it here.)
-                    // targets: "",
                   },
                 ],
               ],
@@ -142,6 +138,11 @@ module.exports = (env) => {
         // Also generate a repo-list.html
         filename: "repo-list.html",
         template: "src/repo-list.html",
+      }),
+      new HtmlWebpackPlugin({
+        // Also generate a repo-list.html
+        filename: "repo-details.html",
+        template: "src/repo-details.html",
       }),
       new CleanWebpackPlugin(),
     ],
