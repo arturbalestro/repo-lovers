@@ -21,7 +21,9 @@ const getRepo = (repoListData) => {
         "</h4>" +
         '<a class="btn btn-primary text-left m-1 details-button" type="button" href="/repo-details.html?selectedRepo=' +
         repo.name +
-        '">View details</a>' +
+        '">' +
+        locales.repoDetailsButtonText +
+        "</a>" +
         "</div></div>" +
         "</div>"
     )
@@ -43,8 +45,7 @@ const renderRepoList = (repoListData) => {
   }
 
   $(".details-button").click((e) => {
-    sessionStorage.setItem("selected-repo", e.target.id);
-    window.location = "/repo-details.html";
+    window.location = "/repo-details.html?selectedRepo=" + e.target.id;
   });
 
   return repoList;
@@ -63,18 +64,20 @@ const RepoList = (mainContainer) => {
       "</div>"
   );
 
+  const repolistContainer = mainContainer.find("#repolist-container");
   spinner(true);
   axios
     .get(githubAPIURL + "/users/" + loggedInUser + "/repos")
     .then((response) => {
       spinner(false);
-      const repolistContainer = mainContainer.find("#repolist-container");
       repolistContainer.append(renderRepoList(response.data));
     })
     .catch((error) => {
       spinner(false);
-      //TODO: Fix error message display. Add bootstrap modal.
-      console.log(locales.repoNotFound);
+      $("#repoErrorModal").modal("show");
+      repolistContainer.append(
+        '<div class="text-center">' + locales.repoNotFound + "</div>"
+      );
     });
 };
 

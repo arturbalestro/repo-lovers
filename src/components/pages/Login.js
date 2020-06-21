@@ -135,7 +135,6 @@ window.addEventListener(
             event.stopPropagation();
             spinner(false);
           } else {
-            //TODO Improve the session storing logic
             // Save form data to sessionStorage
             const currentForm = $(event.target);
             saveSession(currentForm);
@@ -173,7 +172,6 @@ const getCEPInfo = () => {
 
         spinner(false);
 
-        //TODO: Fix error message display
         $("#cepErrorModal").modal("show");
       });
   });

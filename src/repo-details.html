@@ -8,23 +8,63 @@
   <body>
     <div id="root">
       <div id="page-repodetails">
+        <div class="modal fade" id="contributorErrorModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Erro ao encontrar contributors</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="issueErrorModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Erro ao encontrar issues</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="col-md-12">
           <div class="card details-container">
-            <h6><a id="repository-owner" href="/repo-list.html"></a> > <span id="repository-name"></span></h6>
-            <div class="card">
+            <h6>
+              <a id="home" href="/index.html">Home</a> > 
+              <a id="repository-owner" href="/repo-list.html"></a> > 
+              <span id="repository-name"></span>
+            </h6>
+            <div class="card mb-1">
               <div class="card-body">
-                <h5>Contribuidores:</h5>
+                <h5 class="text-center">Contribuidores</h5>
                 <div id="contributor-container" class="col-md-12 p-0 text-left"></div>
               </div>
             </div>
       
-            <div class="card">
+            <div class="card mb-1">
               <div class="card-body">
-              <h5>Issues: </h5>
-              <div class="btn btn-primary" id="filter-open">Open</div>
-              <div class="btn btn-primary" id="filter-closed">Closed</div>
-              <div id="issue-container" class="col-md-12 p-0 text-left"></div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5 class="text-center">Issues</h5>
+                  </div>
+                  <div class="col-md-6" id="filter-container">
+                    <div class="btn btn-link filter-button" id="filter-open">Open</div>
+                    <span> | </span>
+                    <div class="btn btn-link filter-button" id="filter-closed">Closed</div>
+                    <span> | </span>
+                    <div class="btn btn-link filter-button" id="filter-remove">Remove Filters</div>
+                  </div>
+                </div>
+                <div id="issue-container" class="col-md-12 p-0 text-left"></div>
+              </div>
             </div>
+
           </div>
         </div>
       </div>

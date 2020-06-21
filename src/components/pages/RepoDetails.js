@@ -7,15 +7,32 @@ const { input } = formData;
 const githubAPIURL = "https://api.github.com";
 const loggedInUser =
   sessionStorage.getItem(input.usuarioGithub.id) || "octocat";
-const repoName = window.location.search.split("=")[1];
+const urlParams = new URLSearchParams(window.location.search);
+const selectedRepo = urlParams.get("selectedRepo");
+const selectedFilter = urlParams.get("filterIssues");
 
 const renderContributors = (contributors) => {
+  if (contributors.length <= 0) {
+    return (
+      "<li class='text-center mt-3'>" + locales.contributorsNotFound + "</li>"
+    );
+  }
+
+  //TODO Add filters for number of contributions
+
   const contributorsList = contributors
     .sort((a, b) => b.contributions - a.contributions)
+    .slice(0, 20)
     .map((contributor) => {
       if (contributor !== undefined)
         return (
-          "<li><div class='card'><div class='card-body'><p class='mb-0'><strong>" +
+          "<li class='text-center'><div class='card'><div class='card-body'>" +
+          "<img src='" +
+          contributor.avatar_url +
+          "' alt='" +
+          contributor.login +
+          "' />" +
+          "<p class='mb-0'><strong>" +
           contributor.login +
           "</strong></p> <p>Contributions: " +
           contributor.contributions +
@@ -23,16 +40,33 @@ const renderContributors = (contributors) => {
         );
     })
     .join("");
+
   return contributorsList;
 };
 
 const renderIssues = (issues) => {
+  if (selectedFilter) {
+    $("#" + selectedFilter)
+      .removeClass("btn-link")
+      .addClass("btn-primary");
+    issues = filterIssues(issues);
+  }
+
+  if (issues.length <= 0) {
+    return "<li class='text-center mt-3'>" + locales.issuesNotFound + "</li>";
+  }
+
+  //TODO Improve presentation of issues
+
   const issueList = issues
     .sort((a, b) => b.state - a.state)
+    .slice(0, 20)
     .map((issue) => {
       if (issue) {
         return (
-          "<li><div class='card'><div class='card-body'><p class='mb-0'><strong>" +
+          "<li class='" +
+          issue.state +
+          "'><div class='card'><div class='card-body'><p class='mb-0'><strong>" +
           issue.title +
           "</strong></p><p class='mb-0'>" +
           issue.user.login +
@@ -47,63 +81,84 @@ const renderIssues = (issues) => {
   return issueList;
 };
 
-const getIssues = (loggedInUser, repoName) => {
+const getIssues = (loggedInUser, selectedRepo) => {
+  const issueListContainer = $("#issue-container");
   spinner(true);
   axios
-    .get(githubAPIURL + "/repos/" + loggedInUser + "/" + repoName + "/issues")
+    .get(
+      githubAPIURL + "/repos/" + loggedInUser + "/" + selectedRepo + "/issues"
+    )
     .then((response) => {
       spinner(false);
-      const issueListContainer = $("#issue-container");
       issueListContainer.append("<ul>" + renderIssues(response.data) + "</ul>");
     })
     .catch((error) => {
       spinner(false);
-      //TODO: Fix error message display. Add bootstrap modal.
-      console.log(locales.repoNotFound);
+      $("#issueErrorModal").modal("show");
+      issueListContainer.append(
+        "<ul><li class='text-center mt-3'>" +
+          locales.issuesNotFound +
+          "</li></ul>"
+      );
     });
 };
 
-const filterOpenIssues = (issues) => {
-  issues = issues.filter((issue) => issue.state === "open");
+const filterIssues = (issues) => {
+  if (issues) {
+    if (selectedFilter === "filter-open") {
+      issues = issues.filter((issue) => issue.state === "open");
+    }
+    if (selectedFilter === "filter-closed") {
+      issues = issues.filter((issue) => issue.state === "closed");
+    }
+  }
 
-  const issueListContainer = $("#issue-container");
-  issueListContainer.append("<ul>" + renderIssues(issues) + "</ul>");
+  return issues;
 };
 
-const filterClosedIssues = (issues) => {
-  issues = issues.filter((issue) => issue.state === "closed");
-
-  const issueListContainer = $("#issue-container");
-  issueListContainer.append("<ul>" + renderIssues(issues) + "</ul>");
-};
-
-const RepoDetails = (mainContainer) => {
+const RepoDetails = () => {
+  const contributorListContainer = $("#contributor-container");
   spinner(true);
 
   $("#repository-owner").text(loggedInUser);
-  $("#repository-name").text(repoName);
+  $("#repository-name").text(selectedRepo);
 
   axios
     .get(
-      githubAPIURL + "/repos/" + loggedInUser + "/" + repoName + "/contributors"
+      githubAPIURL +
+        "/repos/" +
+        loggedInUser +
+        "/" +
+        selectedRepo +
+        "/contributors"
     )
     .then((response) => {
       spinner(false);
-      const contributorListContainer = $("#contributor-container");
       contributorListContainer.append(
         "<ul>" + renderContributors(response.data) + "</ul>"
       );
-      getIssues(loggedInUser, repoName);
     })
     .catch((error) => {
       spinner(false);
-      //TODO: Fix error message display. Add bootstrap modal.
-      console.log(locales.repoNotFound);
+      $("#contributorErrorModal").modal("show");
+      contributorListContainer.append(
+        "<ul><li class='text-center mt-3'>" +
+          locales.contributorsNotFound +
+          "</li></ul>"
+      );
     });
+  getIssues(loggedInUser, selectedRepo);
 
-  $("#filter-open").click(() => {
-    //TODO Finish this logic
-    //filterOpenIssues($("#issue-container li"));
+  $(".filter-button").click((e) => {
+    if (e.target.id === "filter-remove") {
+      window.location = "/repo-details.html?selectedRepo=" + selectedRepo;
+    } else {
+      window.location =
+        "/repo-details.html?selectedRepo=" +
+        selectedRepo +
+        "&filterIssues=" +
+        e.target.id;
+    }
   });
 };
 

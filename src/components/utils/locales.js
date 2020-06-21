@@ -8,6 +8,9 @@ const locales = {
   cepNotFound: "CEP não encontrado",
   repoListTitle: "Repositórios",
   repoNotFound: "Sem repositórios encontrados.",
+  contributorsNotFound: "Sem contributors encontrados.",
+  issuesNotFound: "Sem issues encontrados.",
+  repoDetailsButtonText: "Ver Detalhes",
 };
 
 export default locales;

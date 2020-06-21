@@ -77,7 +77,14 @@ header .subtitle {
 
 #contributor-container,
 #issue-container {
+  text-align: center;
+}
+#contributor-container ul {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
 }
 #contributor-container ul,
 #issue-container ul {
@@ -86,7 +93,6 @@ header .subtitle {
 }
 #contributor-container li,
 #issue-container li {
-  display: inline-block;
   margin: 5px;
   list-style: none;
   padding: 0;
@@ -94,4 +100,9 @@ header .subtitle {
 #contributor-container li .card,
 #issue-container li .card {
   min-height: 150px;
+  min-width: 220px;
+}
+#contributor-container li img {
+  border-radius: 20px;
+  max-width: 100px;
 }
