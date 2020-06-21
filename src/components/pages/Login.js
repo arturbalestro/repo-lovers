@@ -1,9 +1,10 @@
+import axios from "axios";
+import datepicker from "js-datepicker";
+
 import locales from "../utils/locales";
 import formData from "../utils/formData";
 import maskInput from "../utils/maskInput";
 import spinner from "../utils/spinner";
-
-import axios from "axios";
 
 const { input, textarea } = formData;
 
@@ -121,6 +122,12 @@ window.addEventListener(
   function () {
     maskInput();
     getCEPInfo();
+
+    datepicker("#registroDataNascimento", {
+      formatter: (input, date, instance) => {
+        input.value = date.toLocaleDateString();
+      },
+    });
 
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = $(".needs-validation");

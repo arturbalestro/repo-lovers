@@ -9,24 +9,31 @@ const loggedInUser =
   sessionStorage.getItem(input.usuarioGithub.id) || "octocat";
 const urlParams = new URLSearchParams(window.location.search);
 const selectedRepo = urlParams.get("selectedRepo");
-const selectedFilter = urlParams.get("filterIssues");
+const issuesFilter = urlParams.get("issuesFilter");
+const contributorsFilter = urlParams.get("contributorsFilter");
 
 const renderContributors = (contributors) => {
+  if (contributorsFilter) {
+    $("#" + contributorsFilter)
+      .removeClass("btn-link")
+      .addClass("btn-primary");
+    contributors = filterContributors(contributors);
+  }
+
   if (contributors.length <= 0) {
     return (
       "<li class='text-center mt-3'>" + locales.contributorsNotFound + "</li>"
     );
   }
 
-  //TODO Add filters for number of contributions
-
   const contributorsList = contributors
     .sort((a, b) => b.contributions - a.contributions)
     .slice(0, 20)
     .map((contributor) => {
-      if (contributor !== undefined)
+      if (contributor) {
         return (
-          "<li class='text-center'><div class='card'><div class='card-body'>" +
+          "<li class='text-center'>" +
+          "<div class='card'><div class='card-body'>" +
           "<img src='" +
           contributor.avatar_url +
           "' alt='" +
@@ -38,6 +45,7 @@ const renderContributors = (contributors) => {
           contributor.contributions +
           "</p></div></div></li>"
         );
+      }
     })
     .join("");
 
@@ -45,8 +53,8 @@ const renderContributors = (contributors) => {
 };
 
 const renderIssues = (issues) => {
-  if (selectedFilter) {
-    $("#" + selectedFilter)
+  if (issuesFilter) {
+    $("#" + issuesFilter)
       .removeClass("btn-link")
       .addClass("btn-primary");
     issues = filterIssues(issues);
@@ -56,23 +64,49 @@ const renderIssues = (issues) => {
     return "<li class='text-center mt-3'>" + locales.issuesNotFound + "</li>";
   }
 
-  //TODO Improve presentation of issues
-
   const issueList = issues
     .sort((a, b) => b.state - a.state)
     .slice(0, 20)
     .map((issue) => {
       if (issue) {
+        //TODO Add modal to see the comments
         return (
-          "<li class='" +
-          issue.state +
-          "'><div class='card'><div class='card-body'><p class='mb-0'><strong>" +
+          '<div class="card">' +
+          '<div class="card-header" id="heading-' +
+          issue.id +
+          '">' +
+          '<h2 class="mb-0">' +
+          '<button class="btn btn-link btn-block text-left m-0 p-0" type="button" data-toggle="collapse" data-target="#collapse-' +
+          issue.id +
+          '" aria-expanded="false" aria-controls="collapse-' +
+          issue.id +
+          '">' +
           issue.title +
-          "</strong></p><p class='mb-0'>" +
+          "</button>" +
+          "</h2>" +
+          "</div>" +
+          '<div id="collapse-' +
+          issue.id +
+          '" class="collapse" aria-labelledby="heading-' +
+          issue.id +
+          '" data-parent="#issue-accordion">' +
+          "<div class='card'><div class='card-body'>" +
+          "<p class='mb-0'><strong>" +
+          locales.issueCreatorTitle +
+          "</strong>" +
           issue.user.login +
-          "</p><p class='mb-0'>" +
+          "</p><p class='mb-0 mt-1'><strong>" +
+          locales.issueDescriptionText +
+          "</strong>" +
           issue.body +
-          "</p></div></div></li>"
+          "</p>" +
+          "<p class='mb-0 mt-1'><a href='" +
+          issue.comments_url +
+          "'>" +
+          issue.comments_url +
+          "</a></p></div></div>" +
+          "</div>" +
+          "</div>"
         );
       }
     })
@@ -90,7 +124,11 @@ const getIssues = (loggedInUser, selectedRepo) => {
     )
     .then((response) => {
       spinner(false);
-      issueListContainer.append("<ul>" + renderIssues(response.data) + "</ul>");
+      issueListContainer.append(
+        '<ul class="accordion" id="issue-accordion">' +
+          renderIssues(response.data) +
+          "</ul>"
+      );
     })
     .catch((error) => {
       spinner(false);
@@ -103,12 +141,34 @@ const getIssues = (loggedInUser, selectedRepo) => {
     });
 };
 
+const filterContributors = (contributors) => {
+  if (contributors) {
+    if (contributorsFilter === "filter-100") {
+      contributors = contributors.filter(
+        (contributor) => contributor.contributions > 100
+      );
+    }
+    if (contributorsFilter === "filter-200") {
+      contributors = contributors.filter(
+        (contributor) => contributor.contributions > 200
+      );
+    }
+    if (contributorsFilter === "filter-500") {
+      contributors = contributors.filter(
+        (contributor) => contributor.contributions > 500
+      );
+    }
+  }
+
+  return contributors;
+};
+
 const filterIssues = (issues) => {
   if (issues) {
-    if (selectedFilter === "filter-open") {
+    if (issuesFilter === "filter-open") {
       issues = issues.filter((issue) => issue.state === "open");
     }
-    if (selectedFilter === "filter-closed") {
+    if (issuesFilter === "filter-closed") {
       issues = issues.filter((issue) => issue.state === "closed");
     }
   }
@@ -123,6 +183,8 @@ const RepoDetails = () => {
   $("#repository-owner").text(loggedInUser);
   $("#repository-name").text(selectedRepo);
 
+  //Requesting contributors
+  //Running this outside a function due to issues of not loading response
   axios
     .get(
       githubAPIURL +
@@ -147,16 +209,25 @@ const RepoDetails = () => {
           "</li></ul>"
       );
     });
+
+  //Requesting issues
   getIssues(loggedInUser, selectedRepo);
 
+  //Applying the filters
   $(".filter-button").click((e) => {
-    if (e.target.id === "filter-remove") {
+    if ($(e.target).hasClass("filter-remove")) {
       window.location = "/repo-details.html?selectedRepo=" + selectedRepo;
+    } else if ($(e.target).hasClass("filter-contributors")) {
+      window.location =
+        "/repo-details.html?selectedRepo=" +
+        selectedRepo +
+        "&contributorsFilter=" +
+        e.target.id;
     } else {
       window.location =
         "/repo-details.html?selectedRepo=" +
         selectedRepo +
-        "&filterIssues=" +
+        "&issuesFilter=" +
         e.target.id;
     }
   });

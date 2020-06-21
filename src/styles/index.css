@@ -74,6 +74,16 @@ header .subtitle {
 .details-container {
   padding: 15px;
 }
+.details-container .row {
+  justify-content: space-between;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
 
 #contributor-container,
 #issue-container {

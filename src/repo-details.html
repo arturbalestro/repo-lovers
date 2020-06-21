@@ -40,28 +40,43 @@
               <a id="repository-owner" href="/repo-list.html"></a> > 
               <span id="repository-name"></span>
             </h6>
-            <div class="card mb-1">
+            <div class="card mb-3">
               <div class="card-body">
-                <h5 class="text-center">Contribuidores</h5>
-                <div id="contributor-container" class="col-md-12 p-0 text-left"></div>
+                <div class="row">
+                  <div class="col-md-5">
+                    <h5 class="text-left">Contributors</h5>
+                  </div>
+                  <div class="col-md-7 filter-container">
+                    <span>Filtrar por contribuição: </span>
+                    <div class="btn btn-link filter-button filter-contributors" id="filter-100">100+</div>
+                    <span> | </span>
+                    <div class="btn btn-link filter-button filter-contributors" id="filter-200">200+</div>
+                    <span> | </span>
+                    <div class="btn btn-link filter-button filter-contributors" id="filter-500">500+</div>
+                    <span> | </span>
+                    <div class="btn btn-link filter-button filter-remove">Remover Filtros</div>
+                  </div>
+                </div>
+                <div class="row"><div id="contributor-container" class="col-md-12 p-0 text-left"></div></div>
               </div>
             </div>
       
-            <div class="card mb-1">
+            <div class="card mb-3">
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6">
-                    <h5 class="text-center">Issues</h5>
+                    <h5 class="text-left">Issues</h5>
                   </div>
-                  <div class="col-md-6" id="filter-container">
+                  <div class="col-md-6 filter-container">
+                    <span>Filtrar por estado: </span>
                     <div class="btn btn-link filter-button" id="filter-open">Open</div>
                     <span> | </span>
                     <div class="btn btn-link filter-button" id="filter-closed">Closed</div>
                     <span> | </span>
-                    <div class="btn btn-link filter-button" id="filter-remove">Remove Filters</div>
+                    <div class="btn btn-link filter-button filter-remove">Remover Filtros</div>
                   </div>
                 </div>
-                <div id="issue-container" class="col-md-12 p-0 text-left"></div>
+                <div class="row"><div id="issue-container" class="col-md-12 p-0 text-left"></div></div>
               </div>
             </div>
 

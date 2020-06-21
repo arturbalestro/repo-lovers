@@ -14,7 +14,6 @@ const formData = {
       value: sessionStorage.getItem("registroUsuarioGithub") || "",
       required: true,
     },
-    //TODO: Add a datepicker
     dataNascimento: {
       label: "Data de Nascimento",
       id: "registroDataNascimento",

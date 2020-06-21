@@ -11,6 +11,8 @@ const locales = {
   contributorsNotFound: "Sem contributors encontrados.",
   issuesNotFound: "Sem issues encontrados.",
   repoDetailsButtonText: "Ver Detalhes",
+  issueCreatorTitle: "Criado por: ",
+  issueDescriptionText: "Descrição do issue: ",
 };
 
 export default locales;
