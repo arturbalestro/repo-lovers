@@ -40,6 +40,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
+    "file-loader": "^6.0.0",
     "inputmask": "^5.0.4-beta.33",
     "jquery": "^3.5.1",
     "js-datepicker": "^5.14.2",

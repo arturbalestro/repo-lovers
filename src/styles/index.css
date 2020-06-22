@@ -43,9 +43,8 @@ header .title a {
   text-decoration: none;
   padding-bottom: 1px;
 }
-header .title a:hover {
-  border-bottom: 1px solid #fff;
-  text-decoration: none;
+header .title span {
+  display: block;
 }
 header .subtitle {
   color: #fff;
@@ -84,6 +83,9 @@ header .subtitle {
   align-items: center;
   justify-content: flex-end;
 }
+.filter-container span {
+  margin-right: 5px;
+}
 
 #contributor-container,
 #issue-container {
@@ -97,7 +99,9 @@ header .subtitle {
   justify-content: space-around;
 }
 #contributor-container ul,
-#issue-container ul {
+#issue-container ul,
+#issue-details-container ul,
+#comment-container ul {
   list-style: none;
   padding: 0;
 }
@@ -112,7 +116,9 @@ header .subtitle {
   min-height: 150px;
   min-width: 220px;
 }
-#contributor-container li img {
+#contributor-container li img,
+#comment-container li img {
   border-radius: 20px;
+  margin-bottom: 5px;
   max-width: 100px;
 }

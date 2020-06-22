@@ -2,10 +2,12 @@ import Header from "./components/atoms/Header";
 import Login from "./components/pages/Login";
 import RepoList from "./components/pages/RepoList";
 import RepoDetails from "./components/pages/RepoDetails";
+import IssueDetails from "./components/pages/IssueDetails";
 
 //Importing styles
 import "./styles/index.css";
 import "js-datepicker/dist/datepicker.min.css";
+import locales from "./components/utils/locales";
 
 const Root = () => {
   //Adding main container to root element
@@ -30,6 +32,10 @@ const Root = () => {
       RepoDetails(mainContainer);
       break;
 
+    case "/issue-details.html":
+      IssueDetails(mainContainer);
+      break;
+
     default:
       Login(mainContainer);
       break;
@@ -39,7 +45,7 @@ const Root = () => {
   rootElement.append(
     '<div class="spinner justify-content-center hidden">' +
       '<div class="spinner-border" role="status">' +
-      '<span class="sr-only">Loading...</span>' +
+      '<span class="sr-only">'+locales.loadingText+'</span>' +
       "</div>" +
       "</div>"
   );

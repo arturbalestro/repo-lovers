@@ -41,7 +41,8 @@ const renderContributors = (contributors) => {
           "' />" +
           "<p class='mb-0'><strong>" +
           contributor.login +
-          "</strong></p> <p>Contributions: " +
+          "</strong></p> <p>" +
+          locales.contributionsTitle +
           contributor.contributions +
           "</p></div></div></li>"
         );
@@ -69,42 +70,27 @@ const renderIssues = (issues) => {
     .slice(0, 20)
     .map((issue) => {
       if (issue) {
-        //TODO Add modal to see the comments
         return (
           '<div class="card">' +
           '<div class="card-header" id="heading-' +
           issue.id +
           '">' +
-          '<h2 class="mb-0">' +
-          '<button class="btn btn-link btn-block text-left m-0 p-0" type="button" data-toggle="collapse" data-target="#collapse-' +
-          issue.id +
-          '" aria-expanded="false" aria-controls="collapse-' +
-          issue.id +
-          '">' +
+          '<div class="row">' +
+          '<h5 class="col-md-9 mb-0">' +
           issue.title +
-          "</button>" +
-          "</h2>" +
+          "</h5>" +
+          "<div class='col-md-3 m-0 text-right '>" +
+          '<a href="/issue-details.html?selectedRepo=' +
+          selectedRepo +
+          "&selectedIssue=" +
+          issue.number +
+          '" class="btn btn-primary text-left m-0 comment-details-button" type="button" id="' +
+          issue.number +
+          '">' +
+          locales.repoDetailsButtonText +
+          "</a>" +
           "</div>" +
-          '<div id="collapse-' +
-          issue.id +
-          '" class="collapse" aria-labelledby="heading-' +
-          issue.id +
-          '" data-parent="#issue-accordion">' +
-          "<div class='card'><div class='card-body'>" +
-          "<p class='mb-0'><strong>" +
-          locales.issueCreatorTitle +
-          "</strong>" +
-          issue.user.login +
-          "</p><p class='mb-0 mt-1'><strong>" +
-          locales.issueDescriptionText +
-          "</strong>" +
-          issue.body +
-          "</p>" +
-          "<p class='mb-0 mt-1'><a href='" +
-          issue.comments_url +
-          "'>" +
-          issue.comments_url +
-          "</a></p></div></div>" +
+          "</div>" +
           "</div>" +
           "</div>"
         );
@@ -115,7 +101,7 @@ const renderIssues = (issues) => {
   return issueList;
 };
 
-const getIssues = (loggedInUser, selectedRepo) => {
+const getIssues = () => {
   const issueListContainer = $("#issue-container");
   spinner(true);
   axios
@@ -125,7 +111,7 @@ const getIssues = (loggedInUser, selectedRepo) => {
     .then((response) => {
       spinner(false);
       issueListContainer.append(
-        '<ul class="accordion" id="issue-accordion">' +
+        '<ul class="accordion ml-3 mr-3 mt-3" id="issue-accordion">' +
           renderIssues(response.data) +
           "</ul>"
       );
@@ -211,7 +197,7 @@ const RepoDetails = () => {
     });
 
   //Requesting issues
-  getIssues(loggedInUser, selectedRepo);
+  getIssues();
 
   //Applying the filters
   $(".filter-button").click((e) => {

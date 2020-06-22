@@ -5,9 +5,6 @@ const { input } = formData;
 
 const maskInput = () => {
   if (document.getElementById("login-form") !== null) {
-    Inputmask({ mask: "99/99/9999" }).mask(
-      document.getElementById(input.dataNascimento.id)
-    );
     Inputmask({ mask: "999.999.999-99" }).mask(
       document.getElementById(input.cpf.id)
     );

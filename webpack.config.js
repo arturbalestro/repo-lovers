@@ -49,6 +49,7 @@ module.exports = (env) => {
       proxy: {
         "/repo-list": path.join(PATH_SOURCE, "./repo-list.html"),
         "/repo-details": path.join(PATH_SOURCE, "./repo-details.html"),
+        "/issue-details": path.join(PATH_SOURCE, "./issue-details.html"),
       },
 
       //Enabling Hot Module Replacement
@@ -125,6 +126,10 @@ module.exports = (env) => {
             "sass-loader",
           ],
         },
+        {
+          test: /\.(png|svg|jpg|gif)$/,
+          use: ["file-loader"],
+        },
       ],
     },
     plugins: [
@@ -140,9 +145,14 @@ module.exports = (env) => {
         template: "src/repo-list.html",
       }),
       new HtmlWebpackPlugin({
-        // Also generate a repo-list.html
+        // Also generate a repo-details.html
         filename: "repo-details.html",
         template: "src/repo-details.html",
+      }),
+      new HtmlWebpackPlugin({
+        // Also generate a issue-details.html
+        filename: "issue-details.html",
+        template: "src/issue-details.html",
       }),
       new CleanWebpackPlugin(),
     ],

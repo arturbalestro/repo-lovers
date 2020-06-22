@@ -3,60 +3,11 @@ import datepicker from "js-datepicker";
 
 import locales from "../utils/locales";
 import formData from "../utils/formData";
+import { renderInput, renderTextArea } from "../utils/formFieldRenderer";
 import maskInput from "../utils/maskInput";
 import spinner from "../utils/spinner";
 
 const { input, textarea } = formData;
-
-const renderInput = (fieldData) => {
-  const { label, id, type, value, required } = fieldData;
-  return (
-    '<div class="form-group text-left">' +
-    '<label for="' +
-    id +
-    '">' +
-    label +
-    "</label>" +
-    '<input type="' +
-    type +
-    '" class="form-control" id="' +
-    id +
-    '" value="' +
-    value +
-    '" ' +
-    (required ? "required" : "") +
-    ">" +
-    '<div class="invalid-feedback">' +
-    locales.formInvalidError +
-    "</div>" +
-    "</div>"
-  );
-};
-
-const renderTextArea = (fieldData) => {
-  const { label, id, rows, value, required } = fieldData;
-  return (
-    '<div class="form-group text-left">' +
-    '<label for="' +
-    id +
-    '">' +
-    label +
-    "</label>" +
-    '<textarea class="form-control" id="' +
-    id +
-    '" rows="' +
-    rows +
-    '" ' +
-    required +
-    ">" +
-    value +
-    "</textarea>" +
-    '<div class="invalid-feedback">' +
-    locales.formInvalidError +
-    "</div>" +
-    "</div>"
-  );
-};
 
 const saveSession = (currentForm) => {
   sessionStorage.setItem(
@@ -123,11 +74,14 @@ window.addEventListener(
     maskInput();
     getCEPInfo();
 
-    datepicker("#registroDataNascimento", {
-      formatter: (input, date, instance) => {
-        input.value = date.toLocaleDateString();
-      },
-    });
+    //Add datepicker to date field
+    if ($("#registroDataNascimento").length > 0) {
+      datepicker("#registroDataNascimento", {
+        formatter: (input, date, instance) => {
+          input.value = date.toLocaleDateString();
+        },
+      });
+    }
 
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = $(".needs-validation");

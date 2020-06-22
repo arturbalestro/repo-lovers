@@ -54,11 +54,13 @@ const renderRepoList = (repoListData) => {
 const RepoList = (mainContainer) => {
   mainContainer.append(
     '<div id="page-repolist" class="offset-md-3 col-md-6 text-center">' +
-      "<div><h2>" +
-      locales.repoListTitle +
-      " de " +
+      "<div>" +
+      "<h6 class='text-left'>" +
+      '<a id="home" href="/index.html">Home</a> >' +
+      '<span id="repository-owner">' +
       loggedInUser +
-      "</h2>" +
+      "</span>" +
+      "</h6>" +
       '<div id="repolist-container"></div>' +
       "</div>" +
       "</div>"
